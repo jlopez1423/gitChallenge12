@@ -1,0 +1,69 @@
+<!doctype html>
+
+
+<head>
+	<title> Ajax Using Jquery </title>
+	<link href="css\jquery-ui-themes-1.12.0\jquery-ui-themes-1.12.0\themes\ui-lightness\jquery-ui.min.css" rel="stylesheet" />
+</head>
+	<div class="demo">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Home</a></li>
+				<li><a href="ajax/content1.html">Books</a></li>
+				<li><a href="ajax/content2.html">FAQ</a></li>
+				<li><a href="ajax/content3-broken.php">Contact(broken)</a></li>
+			</ul>
+			<div id="tabs-1">
+				This content is preloaded
+			</div>	
+		</div>
+	</div>
+<body>
+
+</body>
+
+</html>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+</script>
+<script type="js/ui/jquery-ui.min.js"></script>
+
+<script>
+
+$(function() {
+
+	$("#tabs").tabs({
+		ajaxOptions: {
+			success: function() {
+				$("#slider").slider({
+					range: true,
+					min: 1,
+					max: 10,
+						values: [1, 10],
+					slide: function(event, ui){
+						$("#amount").val(ui.vlaues[0] + " to " + ui.values[1]);
+					},
+					change: function(event, ui){
+						var start = ui.values[0];
+						var end = ui.values[1];
+						$('#result').html('');
+						for(var i = start; i <= end; i++){
+							var $item = $('<h3></h3>');
+							$item
+								.load('ajax/items.html #item-'+i)
+								 .appendTo($('#result'));
+						}
+					}
+				});
+			},
+			error: function(xhr, status, index, anchor){
+				$(anchor.hash).html(
+				"Couldn't load this tab. We'll try to fix this as soon as possible. " +
+				"If this wouldn't be a demo.");
+			}
+		}
+	});
+});
+
+
+</script>
